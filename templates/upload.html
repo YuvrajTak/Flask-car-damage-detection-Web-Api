@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Image</title>
+</head>
+<body>
+    <h2>Upload Image for Prediction</h2>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" id="imageFile" name="image" accept="image/*" required>
+        <button type="button" onclick="uploadImage()">Submit</button>
+    </form>
+    <p id="result"></p>
+
+    <script>
+        async function uploadImage() {
+            const formData = new FormData();
+            const imageFile = document.getElementById("imageFile").files[0];
+            formData.append("image", imageFile);
+
+            const response = await fetch("/predict", {
+                method: "POST",
+                body: formData
+            });
+
+            const result = await response.json();
+            document.getElementById("result").innerText = JSON.stringify(result);
+        }
+    </script>
+</body>
+</html>
